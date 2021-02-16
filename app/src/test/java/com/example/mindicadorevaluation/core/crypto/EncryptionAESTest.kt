@@ -17,13 +17,17 @@ class EncryptionAESTest{
     private
     lateinit var encryption : EncryptionAES
 
+    private lateinit var base64Test : Base64Cipher
+
     private
     val keys =  mock(KeysRepository::class.java)
 
 
+
     @Before
     fun init(){
-        encryption = EncryptionAES(keys)
+        base64Test = Base64CipherTesting()
+        encryption = EncryptionAES(keys, base64Test)
 
         `when`(keys.getSecretKey()).thenReturn("estoesunasuperasswordparaprobarl")
     }

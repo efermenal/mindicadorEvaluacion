@@ -37,8 +37,11 @@ class MainActivity : AppCompatActivity() {
             val user = binding.edtUser.text.toString()
 
             if (pass != "" && user != ""){
+                /*
                 this.startActivity(DetailActivity.callActivity(this))
                 finish()
+                 */
+                viewModel.attemptingLogin(id= user, password = pass)
             }else{
                 Snackbar.make(view, getString(R.string.user_and_pass_are_empty), Snackbar.LENGTH_SHORT).show()
             }

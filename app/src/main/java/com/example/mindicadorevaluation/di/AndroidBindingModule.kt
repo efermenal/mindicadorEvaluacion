@@ -1,10 +1,7 @@
 package com.example.mindicadorevaluation.di
 
 import com.example.mindicadorevaluation.Repositories.RemoteRepositoryImpl
-import com.example.mindicadorevaluation.core.crypto.Encryption
-import com.example.mindicadorevaluation.core.crypto.EncryptionAES
-import com.example.mindicadorevaluation.core.crypto.KeysAES
-import com.example.mindicadorevaluation.core.crypto.KeysRepository
+import com.example.mindicadorevaluation.core.crypto.*
 import com.example.mindicadorevaluation.core.services.RemoteRepository
 import com.example.mindicadorevaluation.features.detail.DetailActivity
 import com.example.mindicadorevaluation.features.login.MainActivity
@@ -31,5 +28,8 @@ abstract class AndroidBindingModule {
 
     @Binds
     abstract  fun bindKeysAES(keysAES : KeysAES) : KeysRepository
+
+    @Binds
+    abstract  fun bindBase64Cipher(base64CipherImpl : Base64CipherImpl) : Base64Cipher
 
 }
