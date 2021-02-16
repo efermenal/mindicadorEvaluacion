@@ -13,7 +13,8 @@
         android:text="@string/placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="42sp" />
+        android:gravity="center"
+        android:textSize="36dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,6 +50,6 @@
         android:text="@string/placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="42sp" />
+        android:textSize="36dp" />
 
 </LinearLayout>

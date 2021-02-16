@@ -12,4 +12,5 @@
     <string name="signin">Ingresar</string>
     <string name="forgot_your_password">¿Olvidaste la password?</string>
     <string name="register">Registrarse</string>
+    <string name="user_and_pass_are_empty">Por favor, ingrese los credenciales</string>
 </resources>

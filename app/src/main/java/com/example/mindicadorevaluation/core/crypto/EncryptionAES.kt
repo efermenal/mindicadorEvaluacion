@@ -10,9 +10,10 @@ import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
+import javax.inject.Inject
 
 
-class EncryptionAES (private val keysRepo : KeysRepository) : Encryption {
+class EncryptionAES @Inject constructor (private val keysRepo : KeysRepository) : Encryption {
 
     object AESEncyption {
         @RequiresApi(Build.VERSION_CODES.O)
