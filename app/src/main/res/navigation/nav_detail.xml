@@ -22,5 +22,8 @@
         <action
             android:id="@+id/action_selectedIndicatorFragment_to_listIndicatorsFragment"
             app:destination="@id/listIndicatorsFragment" />
+        <argument
+            android:name="indicator"
+            app:argType="com.example.mindicadorevaluation.core.models.Indicator" />
     </fragment>
 </navigation>

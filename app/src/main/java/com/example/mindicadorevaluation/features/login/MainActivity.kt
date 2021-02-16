@@ -1,13 +1,17 @@
 package com.example.mindicadorevaluation.features.login
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.mindicadorevaluation.R
 import com.example.mindicadorevaluation.databinding.ActivityMainBinding
 import com.example.mindicadorevaluation.features.detail.DetailActivity
 
 class MainActivity : AppCompatActivity() {
 
+    companion object{
+        fun callActivity(context : Context) = Intent(context, MainActivity::class.java)
+    }
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

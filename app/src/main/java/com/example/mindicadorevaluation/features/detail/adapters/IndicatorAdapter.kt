@@ -32,6 +32,11 @@ class IndicatorAdapter : RecyclerView.Adapter<IndicatorAdapter.IndicatorVH>() {
         return IndicatorVH(biding)
     }
 
+    private var onIndicatorClickListener : ((Indicator) -> Unit)? = null
+    fun setOnIndicatorClickListener(listener : (Indicator)-> Unit){
+        onIndicatorClickListener = listener
+    }
+
     override fun onBindViewHolder(holder: IndicatorVH, position: Int) {
 
         Timber.d("position  $position")
@@ -39,7 +44,9 @@ class IndicatorAdapter : RecyclerView.Adapter<IndicatorAdapter.IndicatorVH>() {
             with(differ.currentList[position]){
                 biding.nameIndicator.text = nombre
                 biding.valueIndicator.text = valor.toString()
-
+                holder.itemView.setOnClickListener {
+                    onIndicatorClickListener?.let { it(this) }
+                }
             }
         }
     }

@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">MindicadorEvaluation</string>
+    <string name="placeholder">placeholder</string>
+    <string name="login">Login</string>
+    <string name="exit_warning">¿Desea salir?</string>
+    <string name="exit_warning_positive">Sí</string>
+    <string name="exit_warning_negative">No</string>
+    <string name="title_detail">Hola %s</string>
+    <string name="title_selected_indicator">Indicador Económico</string>
+    <string name="user">Usuario</string>
+    <string name="password">Password</string>
+    <string name="signin">Ingresar</string>
+    <string name="forgot_your_password">¿Olvidaste la password?</string>
+    <string name="register">Registrarse</string>
 </resources>

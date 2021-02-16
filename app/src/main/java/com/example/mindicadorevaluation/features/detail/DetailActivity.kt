@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -40,4 +42,9 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
+
+    override fun onSupportNavigateUp(): Boolean {
+        val nav = findNavController(R.id.nav_host_fragment)
+        return nav.navigateUp() || super.onSupportNavigateUp()
+    }
 }
