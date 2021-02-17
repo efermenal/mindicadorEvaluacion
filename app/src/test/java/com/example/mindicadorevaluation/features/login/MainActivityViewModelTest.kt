@@ -18,7 +18,6 @@ import org.hamcrest.core.IsInstanceOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.Mock
 import org.mockito.Mockito
 
 class MainActivityViewModelTest {
