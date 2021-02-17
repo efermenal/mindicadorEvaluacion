@@ -15,7 +15,7 @@ class EncryptionAES @Inject constructor(
     , private val base64Cipher: Base64Cipher
 ) : Encryption {
 
-    /*
+    /* this causes issues in certains APIs
     object AESEncyption {
         @RequiresApi(Build.VERSION_CODES.O)
         val encoder = Base64.getEncoder()

@@ -35,6 +35,7 @@ class MainActivityViewModel
         withContext(ioDispatcher){
             _isOn.postValue(ResourceLogin.Loading)
             val users = userDao.getUserById(id).first()
+
             if (users.isNotEmpty() &&  encryption.encode(password).trim().equals(users[0].password.trim())){
                 auth.setIsLogged(true)
                 auth.setUserLogged(users[0].userId)
