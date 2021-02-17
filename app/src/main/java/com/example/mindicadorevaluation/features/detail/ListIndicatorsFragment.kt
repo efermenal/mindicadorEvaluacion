@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -50,8 +51,22 @@ class ListIndicatorsFragment : Fragment() {
         init()
         observeList()
         viewModel.getIndicators()
-        val user = "Endherson" //TODO extract from session
+        val user = viewModel.getUserName().toUpperCase()
+
         (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_detail, user)
+
+        binding.svIndicator.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                indicatorAdapter.filterByCode(query!!)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                indicatorAdapter.filterByCode(newText!!)
+                return true
+            }
+        })
+
     }
 
 
@@ -100,7 +115,8 @@ class ListIndicatorsFragment : Fragment() {
                     hideProgress()
                     response.data?.let { indicatorResponse ->
                         val listIndicators = indicatorResponse.getListIndicator() as List<Indicator>
-                        indicatorAdapter.differ.submitList(listIndicators.toList())
+                        //indicatorAdapter.differ.submitList(listIndicators.toList())
+                        indicatorAdapter.updateList(listIndicators.toList())
                     }
                 }
                 is Resource.Error -> {

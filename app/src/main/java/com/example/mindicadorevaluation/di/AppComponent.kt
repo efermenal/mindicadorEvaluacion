@@ -26,10 +26,7 @@ interface AppComponent : AndroidInjector<BaseApplication> {
 
         @BindsInstance
         fun application(application: Application): Builder
-        /*
-        @BindsInstance
-        fun applicationCoroutineScope(@AppCoroutineScope applicationCoroutineScope: CoroutineScope): Builder
-        */
+
         fun build(): AppComponent
     }
 }

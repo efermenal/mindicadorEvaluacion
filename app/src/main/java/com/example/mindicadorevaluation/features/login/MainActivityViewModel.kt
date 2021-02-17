@@ -4,6 +4,7 @@ package com.example.mindicadorevaluation.features.login
 import androidx.lifecycle.*
 import com.example.mindicadorevaluation.core.crypto.Encryption
 import com.example.mindicadorevaluation.core.models.User
+import com.example.mindicadorevaluation.core.services.Authenticator
 import com.example.mindicadorevaluation.core.services.NetworkInformation
 import com.example.mindicadorevaluation.core.utils.ResourceLogin
 import com.example.mindicadorevaluation.db.UserDao
@@ -24,6 +25,7 @@ class MainActivityViewModel
     private val encryption : Encryption,
     private val userDao : UserDao,
     @IoDispatcher private val ioDispatcher : CoroutineDispatcher,
+    private val auth : Authenticator,
 )  : ViewModel() {
 
     private val _isOn = MutableLiveData<ResourceLogin>()
@@ -34,6 +36,9 @@ class MainActivityViewModel
             _isOn.postValue(ResourceLogin.Loading)
             val users = userDao.getUserById(id).first()
             if (users.isNotEmpty() &&  encryption.encode(password).trim().equals(users[0].password.trim())){
+                auth.setIsLogged(true)
+                auth.setUserLogged(users[0].userId)
+                Timber.d("User ${users[0].userId}")
                 _isOn.postValue(ResourceLogin.Valid)
             }else{
                 _isOn.postValue(ResourceLogin.Invalid)

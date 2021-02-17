@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mindicadorevaluation.core.models.Indicator
 import com.example.mindicadorevaluation.core.models.IndicatorResponse
+import com.example.mindicadorevaluation.core.services.Authenticator
 import com.example.mindicadorevaluation.core.services.NetworkInformation
 import com.example.mindicadorevaluation.core.services.RemoteRepository
 import com.example.mindicadorevaluation.core.utils.Resource
@@ -18,11 +19,14 @@ class DetailViewModel
     constructor (
         private val remote : RemoteRepository,
         private val netInfo : NetworkInformation,
+        private val auth : Authenticator,
     ) : ViewModel() {
 
     private val _responseApi = MutableLiveData<Resource<IndicatorResponse>>()
     val responseApi : LiveData<Resource<IndicatorResponse>>
         get() = _responseApi
+
+    fun getUserName() = auth.getUserLogged()
 
     fun getIndicators() = viewModelScope.launch {
 
