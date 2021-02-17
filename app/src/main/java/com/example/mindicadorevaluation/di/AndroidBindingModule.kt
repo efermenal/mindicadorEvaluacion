@@ -2,7 +2,9 @@ package com.example.mindicadorevaluation.di
 
 import com.example.mindicadorevaluation.Repositories.RemoteRepositoryImpl
 import com.example.mindicadorevaluation.core.crypto.*
+import com.example.mindicadorevaluation.core.services.NetworkInformation
 import com.example.mindicadorevaluation.core.services.RemoteRepository
+import com.example.mindicadorevaluation.core.utils.NetworkState
 import com.example.mindicadorevaluation.features.detail.DetailActivity
 import com.example.mindicadorevaluation.features.login.MainActivity
 import dagger.Binds
@@ -31,5 +33,8 @@ abstract class AndroidBindingModule {
 
     @Binds
     abstract  fun bindBase64Cipher(base64CipherImpl : Base64CipherImpl) : Base64Cipher
+
+    @Binds
+    abstract fun bindNetWorkState(networkState: NetworkState) : NetworkInformation
 
 }

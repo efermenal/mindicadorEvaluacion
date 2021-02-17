@@ -16,6 +16,7 @@ import com.example.mindicadorevaluation.core.utils.Resource
 import com.example.mindicadorevaluation.databinding.FragmentListIndicatorsBinding
 import com.example.mindicadorevaluation.features.detail.adapters.IndicatorAdapter
 import com.example.mindicadorevaluation.features.login.MainActivity
+import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 
 class ListIndicatorsFragment : Fragment() {
@@ -41,7 +42,6 @@ class ListIndicatorsFragment : Fragment() {
         _binding = FragmentListIndicatorsBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
 
-      //  activity?.setTitle(R.string.title_detail)
         return binding.root
     }
 
@@ -90,22 +90,34 @@ class ListIndicatorsFragment : Fragment() {
     private fun observeList() {
 
         viewModel.responseApi.removeObservers(viewLifecycleOwner)
-        viewModel.responseApi.observe(viewLifecycleOwner, Observer {response ->
-            when(response)
-            {
+        viewModel.responseApi.observe(viewLifecycleOwner, Observer { response ->
+            when (response) {
                 is Resource.Loading -> {
                     showProgress()
                 }
 
                 is Resource.Success -> {
                     hideProgress()
-                    response.data?.let {indicatorResponse ->
-                        Timber.d(indicatorResponse.getListIndicator().toList().toString())
-
-                        val ddd = indicatorResponse.getListIndicator() as List<Indicator>
-                        Timber.d("List sent ${indicatorResponse.getListIndicator().size}")
-                        indicatorAdapter.differ.submitList(ddd.toList())
+                    response.data?.let { indicatorResponse ->
+                        val listIndicators = indicatorResponse.getListIndicator() as List<Indicator>
+                        indicatorAdapter.differ.submitList(listIndicators.toList())
                     }
+                }
+                is Resource.Error -> {
+                    hideProgress()
+                    Snackbar.make(
+                        this.requireView(),
+                        getString(R.string.load_error),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                }
+                is Resource.NoInternet -> {
+                    hideProgress()
+                    Snackbar.make(
+                        this.requireView(),
+                        getString(R.string.no_internet),
+                        Snackbar.LENGTH_SHORT
+                    ).show()
                 }
             }
         })

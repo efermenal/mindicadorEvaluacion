@@ -8,5 +8,5 @@ import dagger.Provides
 class DaoModule {
 
     @Provides
-    fun provideIndicatorDao(database: MindicadorDatabase)  = database.getIndicatorDao()
+    fun provideIndicatorDao(database: MindicadorDatabase)  = database.getUserDao()
 }

@@ -1,5 +1,6 @@
 package com.example.mindicadorevaluation.db
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -10,9 +11,10 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface UserDao {
 
-    @Query("Select * from user_table where userId = :id")
-    fun getUserById(id : String) : Flow<User>
+    @Query("SELECT * FROM user_table WHERE userId = :id")
+    fun getUserById(id : String) : Flow<List<User>>
+
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUser(user: User)
+    fun insertUser(user: List<User>)
 }
