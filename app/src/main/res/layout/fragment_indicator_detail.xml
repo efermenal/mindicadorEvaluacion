@@ -22,25 +22,29 @@
         android:gravity="center"
         android:orientation="horizontal"       >
 
-        <Button
+        <TextView
             android:id="@+id/codeIndicator"
             android:text="@string/placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
             android:textSize="16dp" />
 
-        <Button
+        <TextView
             android:id="@+id/unitIndicator"
             android:text="@string/placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
             android:textSize="16dp" />
 
-        <Button
+        <TextView
             android:id="@+id/dateIndicator"
             android:text="@string/placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:ellipsize="end"
             android:textSize="16dp" />
 
     </LinearLayout>
