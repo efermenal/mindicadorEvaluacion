@@ -57,7 +57,7 @@ class UserDaoTest {
 
         val users = userDao.getUserById(id).first()
 
-        MatcherAssert.assertThat(users[0], IsEqual.equalTo(userTest));
+        MatcherAssert.assertThat(users[0], IsEqual.equalTo(userTest))
     }
 
     @Test

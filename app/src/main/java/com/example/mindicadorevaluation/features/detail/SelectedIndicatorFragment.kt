@@ -25,6 +25,9 @@ class SelectedIndicatorFragment : Fragment(R.layout.fragment_indicator_detail){
         val dateString = item.fecha.substring(0,10)
         binding.dateIndicator.text = dateString
 
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_selected_indicator)
+        if (activity is AppCompatActivity){
+            (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_selected_indicator)
+        }
+
     }
 }

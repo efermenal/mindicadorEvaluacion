@@ -3,6 +3,7 @@ package com.example.mindicadorevaluation.features.detail
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -31,8 +32,9 @@ class ListIndicatorsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel = (activity as DetailActivity).viewModel
+        if (requireActivity() is DetailActivity){
+            viewModel = (activity as DetailActivity).viewModel
+        }
     }
 
     override fun onCreateView(
@@ -53,9 +55,13 @@ class ListIndicatorsFragment : Fragment() {
         viewModel.getIndicators()
         val user = viewModel.getUserName().toUpperCase()
 
-        (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_detail, user)
+        if (requireActivity() is AppCompatActivity){
+            (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_detail, user)
+        }
 
-        binding.svIndicator.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+
+        binding.svIndicator.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 indicatorAdapter.filterByCode(query!!)
                 return true
@@ -77,7 +83,7 @@ class ListIndicatorsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_detail_activity, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+        //super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -121,11 +127,13 @@ class ListIndicatorsFragment : Fragment() {
                 }
                 is Resource.Error -> {
                     hideProgress()
+
                     Snackbar.make(
                         this.requireView(),
                         getString(R.string.load_error),
                         Snackbar.LENGTH_SHORT
                     ).show()
+
                 }
                 is Resource.NoInternet -> {
                     hideProgress()

@@ -37,8 +37,10 @@ class MainActivityViewModel
             val users = userDao.getUserById(id).first()
 
             if (users.isNotEmpty() &&  encryption.encode(password).trim().equals(users[0].password.trim())){
-                auth.setIsLogged(true)
-                auth.setUserLogged(users[0].userId)
+                auth.apply {
+                    setIsLogged(true)
+                    setUserLogged(users[0].userId)
+                }
                 Timber.d("User ${users[0].userId}")
                 _isOn.postValue(ResourceLogin.Valid)
             }else{

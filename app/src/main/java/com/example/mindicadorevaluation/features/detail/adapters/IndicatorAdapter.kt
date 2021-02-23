@@ -13,7 +13,6 @@ import timber.log.Timber
 class IndicatorAdapter : RecyclerView.Adapter<IndicatorAdapter.IndicatorVH>() {
 
 
-
     inner class IndicatorVH(val biding : ItemIndicatorBinding) : RecyclerView.ViewHolder(biding.root)
 
     private val itemDiffCallback = object :DiffUtil.ItemCallback<Indicator>(){
