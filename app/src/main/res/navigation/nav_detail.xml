@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/listIndicatorsFragment"
-        android:name="com.example.mindicadorevaluation.features.detail.ListIndicatorsFragment"
+        android:name="com.example.mindicadorevaluation.features.detail.ListIndicatorFragment"
         android:label="fragment_list_indicators"
-        tools:layout="@layout/fragment_list_indicators" >
+        tools:layout="@layout/fragment_list_indicator" >
         <action
             android:id="@+id/action_listIndicatorsFragment_to_selectedIndicatorFragment"
             app:destination="@id/selectedIndicatorFragment" />

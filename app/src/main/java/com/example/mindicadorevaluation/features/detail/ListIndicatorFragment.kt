@@ -17,7 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mindicadorevaluation.R
-import com.example.mindicadorevaluation.databinding.FragmentListIndicatorsBinding
+import com.example.mindicadorevaluation.databinding.FragmentListIndicatorBinding
 import com.example.mindicadorevaluation.features.detail.adapters.IndicatorAdapter
 import com.example.mindicadorevaluation.features.gone
 import com.example.mindicadorevaluation.features.login.MainActivity
@@ -26,14 +26,14 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-class ListIndicatorsFragment : Fragment() {
+class ListIndicatorFragment : Fragment() {
 
     lateinit var indicatorAdapter: IndicatorAdapter
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private val viewModel: DetailViewModel by viewModels { viewModelFactory }
-    private var _binding: FragmentListIndicatorsBinding? = null
+    private var _binding: FragmentListIndicatorBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -41,7 +41,7 @@ class ListIndicatorsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentListIndicatorsBinding.inflate(inflater, container, false)
+        _binding = FragmentListIndicatorBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         return binding.root
     }
@@ -159,7 +159,7 @@ class ListIndicatorsFragment : Fragment() {
 
         indicatorAdapter.setOnIndicatorClickListener {
             val action =
-                ListIndicatorsFragmentDirections
+                ListIndicatorFragmentDirections
                     .actionListIndicatorsFragmentToSelectedIndicatorFragment(it)
             findNavController().navigate(action)
         }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
-    tools:context=".features.detail.ListIndicatorsFragment">
+    tools:context=".features.detail.ListIndicatorFragment">
 
     <SearchView
         android:id="@+id/svIndicator"

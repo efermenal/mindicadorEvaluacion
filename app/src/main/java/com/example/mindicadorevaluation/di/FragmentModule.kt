@@ -1,6 +1,6 @@
 package com.example.mindicadorevaluation.di
 
-import com.example.mindicadorevaluation.features.detail.ListIndicatorsFragment
+import com.example.mindicadorevaluation.features.detail.ListIndicatorFragment
 import com.example.mindicadorevaluation.features.login.LoginFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -14,5 +14,5 @@ interface FragmentModule {
 
     @FragmentScope
     @ContributesAndroidInjector
-    fun listIndicatorFragment(): ListIndicatorsFragment
+    fun listIndicatorFragment(): ListIndicatorFragment
 }
