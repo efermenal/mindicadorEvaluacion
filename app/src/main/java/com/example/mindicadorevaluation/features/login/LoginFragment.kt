@@ -64,7 +64,10 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         }
 
         viewModel.command.observe(viewLifecycleOwner) {
-            processCommand(it)
+            it?.let {
+                processCommand(it)
+            }
+
         }
     }
 
@@ -82,7 +85,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         findNavController().navigate(action)
     }
 
-    private fun processCommand(command: MainActivityViewModel.Command?) {
+    private fun processCommand(command: MainActivityViewModel.Command) {
         when (command) {
             MainActivityViewModel.Command.EmptyCredentials -> {
                 Snackbar.make(
@@ -94,7 +97,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             MainActivityViewModel.Command.NavigateToMainPage -> {
                 navigateToList()
             }
-            else -> {
+            MainActivityViewModel.Command.InvalidUser -> {
                 Snackbar.make(
                     binding.root,
                     getString(R.string.login_invalid),
