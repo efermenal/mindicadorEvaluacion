@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.mindicadorevaluation.R
-import com.example.mindicadorevaluation.core.utils.ResourceLogin
 import com.example.mindicadorevaluation.databinding.FragmentLoginBinding
+import com.example.mindicadorevaluation.features.gone
+import com.example.mindicadorevaluation.features.hideKeyBoard
+import com.example.mindicadorevaluation.features.show
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
-import timber.log.Timber
 import javax.inject.Inject
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
@@ -52,44 +54,54 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun setObservers() {
-        viewModel.isOn.observe(viewLifecycleOwner) {
-            when (it) {
-                is ResourceLogin.Loading -> {
-                    binding.progressBarSignIn.visibility = View.VISIBLE
-                }
-                is ResourceLogin.Valid -> {
-                    binding.progressBarSignIn.visibility = View.INVISIBLE
-                }
-                is ResourceLogin.Invalid -> {
-                    binding.progressBarSignIn.visibility = View.INVISIBLE
-                    Snackbar.make(
-                        binding.root,
-                        getString(R.string.login_invalid),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-                is ResourceLogin.Error -> {
-                    binding.progressBarSignIn.visibility = View.INVISIBLE
-                    Timber.d("Error Login")
-                }
+
+        viewModel.viewState.observe(viewLifecycleOwner) { viewState ->
+            if (viewState.isLoading) {
+                binding.progressBarSignIn.show()
+            } else {
+                binding.progressBarSignIn.gone()
             }
+        }
+
+        viewModel.command.observe(viewLifecycleOwner) {
+            processCommand(it)
         }
     }
 
     private fun setListeners() {
         binding.btnLogin.setOnClickListener {
+            it?.hideKeyBoard()
             val pass = binding.edtPass.text.trim().toString()
             val user = binding.edtUser.text.trim().toString()
+            viewModel.attemptingLogin(id = user, password = pass)
+        }
+    }
 
-            if (pass.isNotEmpty() && user.isNotEmpty()) {
-                viewModel.attemptingLogin(id = user, password = pass)
-            } else {
+    private fun navigateToList() {
+        val action = LoginFragmentDirections.actionLoginFragmentToListIndicatorsFragment()
+        findNavController().navigate(action)
+    }
+
+    private fun processCommand(command: MainActivityViewModel.Command?) {
+        when (command) {
+            MainActivityViewModel.Command.EmptyCredentials -> {
                 Snackbar.make(
                     binding.root,
                     getString(R.string.user_and_pass_are_empty),
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
+            MainActivityViewModel.Command.NavigateToMainPage -> {
+                navigateToList()
+            }
+            else -> {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.login_invalid),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 }
+
