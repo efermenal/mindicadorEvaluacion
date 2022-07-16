@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-class MainActivityViewModel @Inject constructor(
+class LoginViewModel @Inject constructor(
     private val encryption: Encryption,
     private val userDao: UserDao,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,

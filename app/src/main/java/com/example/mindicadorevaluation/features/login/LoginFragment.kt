@@ -22,7 +22,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: MainActivityViewModel by viewModels {
+    private val viewModel: LoginViewModel by viewModels {
         viewModelFactory
     }
     private var _binding: FragmentLoginBinding? = null
@@ -85,19 +85,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         findNavController().navigate(action)
     }
 
-    private fun processCommand(command: MainActivityViewModel.Command) {
+    private fun processCommand(command: LoginViewModel.Command) {
         when (command) {
-            MainActivityViewModel.Command.EmptyCredentials -> {
+            LoginViewModel.Command.EmptyCredentials -> {
                 Snackbar.make(
                     binding.root,
                     getString(R.string.user_and_pass_are_empty),
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
-            MainActivityViewModel.Command.NavigateToMainPage -> {
+            LoginViewModel.Command.NavigateToMainPage -> {
                 navigateToList()
             }
-            MainActivityViewModel.Command.InvalidUser -> {
+            LoginViewModel.Command.InvalidUser -> {
                 Snackbar.make(
                     binding.root,
                     getString(R.string.login_invalid),
