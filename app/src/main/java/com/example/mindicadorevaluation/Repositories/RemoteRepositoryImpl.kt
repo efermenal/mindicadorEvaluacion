@@ -1,28 +1,31 @@
 package com.example.mindicadorevaluation.Repositories
 
 import com.example.mindicadorevaluation.api.MindicadorApi
+import com.example.mindicadorevaluation.core.models.Indicator
 import com.example.mindicadorevaluation.core.models.IndicatorResponse
 import com.example.mindicadorevaluation.core.services.RemoteRepository
 import com.example.mindicadorevaluation.core.utils.Resource
+import com.example.mindicadorevaluation.di.IoDispatcher
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import retrofit2.Response
-import retrofit2.Retrofit
 import javax.inject.Inject
 
-class RemoteRepositoryImpl
- @Inject constructor(
-     private  val remote: MindicadorApi,
-     ) : RemoteRepository {
+class RemoteRepositoryImpl @Inject constructor(
+    private val remote: MindicadorApi,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+) : RemoteRepository {
 
 
-    override suspend fun getIndicators(): Resource<IndicatorResponse> {
+    override suspend fun getIndicators(): Resource<List<Indicator>> = withContext(ioDispatcher) {
         val response = remote.getIndicators()
-        return handleRequest(response)
+        handleRequest(response)
     }
 
-    private fun handleRequest(response: Response<IndicatorResponse>) : Resource<IndicatorResponse>{
-        if (response.isSuccessful){
+    private fun handleRequest(response: Response<IndicatorResponse>): Resource<List<Indicator>> {
+        if (response.isSuccessful) {
             response.body()?.let { result ->
-            return Resource.Success(result)
+                return Resource.Success(result.getListIndicator())
             }
         }
         return Resource.Error(response.message())

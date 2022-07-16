@@ -1,7 +1,6 @@
 package com.example.mindicadorevaluation.features.detail
 
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -13,23 +12,27 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mindicadorevaluation.R
-import com.example.mindicadorevaluation.core.models.Indicator
-import com.example.mindicadorevaluation.core.utils.Resource
 import com.example.mindicadorevaluation.databinding.FragmentListIndicatorsBinding
 import com.example.mindicadorevaluation.features.detail.adapters.IndicatorAdapter
+import com.example.mindicadorevaluation.features.gone
 import com.example.mindicadorevaluation.features.login.MainActivity
+import com.example.mindicadorevaluation.features.show
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
+import javax.inject.Inject
 
 class ListIndicatorsFragment : Fragment() {
 
     lateinit var indicatorAdapter: IndicatorAdapter
 
-    lateinit var viewModel: DetailViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel: DetailViewModel by viewModels { viewModelFactory }
     private var _binding: FragmentListIndicatorsBinding? = null
     private val binding get() = _binding!!
 
@@ -52,8 +55,7 @@ class ListIndicatorsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
         observeList()
-        viewModel.getIndicators()
-        val user = viewModel.getUserName().toUpperCase()
+        val user = viewModel.getUserName().uppercase()
 
         if (requireActivity() is AppCompatActivity) {
             (activity as AppCompatActivity).supportActionBar?.title =
@@ -90,17 +92,17 @@ class ListIndicatorsFragment : Fragment() {
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage(R.string.exit_warning)
                     .setPositiveButton(
-                        R.string.exit_warning_positive,
-                        DialogInterface.OnClickListener { dialogInterface, i ->
-                            requireContext().startActivity(MainActivity.callActivity(requireContext()))
-                            requireActivity().finish()
+                        R.string.exit_warning_positive
+                    ) { _, _ ->
+                        requireContext().startActivity(MainActivity.callActivity(requireContext()))
+                        requireActivity().finish()
 
-                        })
+                    }
                     .setNegativeButton(
-                        R.string.exit_warning_negative,
-                        DialogInterface.OnClickListener { dialogInterface, i ->
+                        R.string.exit_warning_negative
+                    ) { _, _ ->
 
-                        })
+                    }
 
                 val b = builder.create()
                 b.show()
@@ -111,42 +113,39 @@ class ListIndicatorsFragment : Fragment() {
     }
 
     private fun observeList() {
-        viewModel.responseApi.removeObservers(viewLifecycleOwner)
-        viewModel.responseApi.observe(viewLifecycleOwner, Observer { response ->
-            when (response) {
-                is Resource.Loading -> {
-                    showProgress()
-                }
 
-                is Resource.Success -> {
-                    hideProgress()
-                    response.data?.let { indicatorResponse ->
-                        val listIndicators = indicatorResponse.getListIndicator() as List<Indicator>
-                        //indicatorAdapter.differ.submitList(listIndicators.toList())
-                        indicatorAdapter.updateList(listIndicators.toList())
-                    }
-                }
-                is Resource.Error -> {
-                    hideProgress()
-
-                    Snackbar.make(
-                        this.requireView(),
-                        getString(R.string.load_error),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-
-                }
-                is Resource.NoInternet -> {
-                    hideProgress()
-                    Snackbar.make(
-                        this.requireView(),
-                        getString(R.string.no_internet),
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
+        viewModel.viewState.observe(viewLifecycleOwner) { viewState ->
+            when (viewState.isLoading) {
+                true -> binding.pbRequestApi.show()
+                false -> binding.pbRequestApi.gone()
             }
-        })
 
+            indicatorAdapter.updateList(viewState.indicators)
+
+            viewModel.command.observe(viewLifecycleOwner) {
+                it?.let { processCommand(it) }
+            }
+
+        }
+    }
+
+    private fun processCommand(command: DetailViewModel.Command) {
+        when (command) {
+            DetailViewModel.Command.Error -> {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.load_error),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+            DetailViewModel.Command.NoInternet -> {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.no_internet),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     private fun init() {
@@ -160,22 +159,11 @@ class ListIndicatorsFragment : Fragment() {
 
         indicatorAdapter.setOnIndicatorClickListener {
             val action =
-                ListIndicatorsFragmentDirections.actionListIndicatorsFragmentToSelectedIndicatorFragment(
-                    it
-                )
+                ListIndicatorsFragmentDirections
+                    .actionListIndicatorsFragmentToSelectedIndicatorFragment(it)
             findNavController().navigate(action)
         }
 
-        binding.rvIndicators.setOnClickListener {
-            findNavController().navigate(R.id.action_listIndicatorsFragment_to_selectedIndicatorFragment)
-        }
     }
 
-    private fun hideProgress() {
-        binding.pbRequestApi.visibility = View.INVISIBLE
-    }
-
-    private fun showProgress() {
-        binding.pbRequestApi.visibility = View.VISIBLE
-    }
 }
