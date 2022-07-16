@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,6 +20,7 @@ import com.example.mindicadorevaluation.databinding.FragmentListIndicatorBinding
 import com.example.mindicadorevaluation.features.detail.adapters.IndicatorAdapter
 import com.example.mindicadorevaluation.features.gone
 import com.example.mindicadorevaluation.features.login.MainActivity
+import com.example.mindicadorevaluation.features.setSupportActionBarTitle
 import com.example.mindicadorevaluation.features.show
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
@@ -57,10 +57,7 @@ class ListIndicatorFragment : Fragment() {
         observeList()
         val user = viewModel.getUserName().uppercase()
 
-        if (requireActivity() is AppCompatActivity) {
-            (activity as AppCompatActivity).supportActionBar?.title =
-                getString(R.string.title_detail, user)
-        }
+        setSupportActionBarTitle(R.string.title_detail, user)
 
         binding.svIndicator.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
