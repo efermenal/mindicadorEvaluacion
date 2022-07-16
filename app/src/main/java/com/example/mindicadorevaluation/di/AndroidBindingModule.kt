@@ -1,6 +1,6 @@
 package com.example.mindicadorevaluation.di
 
-import com.example.mindicadorevaluation.Repositories.RemoteRepositoryImpl
+import com.example.mindicadorevaluation.repositories.RemoteRepositoryImpl
 import com.example.mindicadorevaluation.core.crypto.Base64Cipher
 import com.example.mindicadorevaluation.core.crypto.Base64CipherImpl
 import com.example.mindicadorevaluation.core.crypto.Encryption

@@ -1,4 +1,4 @@
-package com.example.mindicadorevaluation.Repositories
+package com.example.mindicadorevaluation.repositories
 
 import com.example.mindicadorevaluation.api.MindicadorApi
 import com.example.mindicadorevaluation.core.models.Indicator
