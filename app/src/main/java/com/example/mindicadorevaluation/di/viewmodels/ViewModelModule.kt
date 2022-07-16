@@ -2,7 +2,7 @@ package com.example.mindicadorevaluation.di.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.mindicadorevaluation.features.detail.DetailViewModel
+import com.example.mindicadorevaluation.features.detail.ListIndicatorViewModel
 import com.example.mindicadorevaluation.features.login.LoginViewModel
 import dagger.Binds
 import dagger.Module
@@ -17,8 +17,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(DetailViewModel::class)
-    abstract fun bindsHomeViewModel(detailViewModel: DetailViewModel): ViewModel
+    @ViewModelKey(ListIndicatorViewModel::class)
+    abstract fun bindsHomeViewModel(listIndicatorViewModel: ListIndicatorViewModel): ViewModel
 
     @Binds
     @IntoMap

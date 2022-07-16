@@ -32,7 +32,7 @@ class ListIndicatorFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel: DetailViewModel by viewModels { viewModelFactory }
+    private val viewModel: ListIndicatorViewModel by viewModels { viewModelFactory }
     private var _binding: FragmentListIndicatorBinding? = null
     private val binding get() = _binding!!
 
@@ -129,16 +129,16 @@ class ListIndicatorFragment : Fragment() {
         }
     }
 
-    private fun processCommand(command: DetailViewModel.Command) {
+    private fun processCommand(command: ListIndicatorViewModel.Command) {
         when (command) {
-            DetailViewModel.Command.Error -> {
+            ListIndicatorViewModel.Command.Error -> {
                 Snackbar.make(
                     binding.root,
                     getString(R.string.load_error),
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
-            DetailViewModel.Command.NoInternet -> {
+            ListIndicatorViewModel.Command.NoInternet -> {
                 Snackbar.make(
                     binding.root,
                     getString(R.string.no_internet),

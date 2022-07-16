@@ -13,7 +13,7 @@ import com.example.mindicadorevaluation.features.SingleLiveEvent
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class DetailViewModel @Inject constructor(
+class ListIndicatorViewModel @Inject constructor(
     private val remote: RemoteRepository,
     private val netInfo: NetworkInformation,
     private val auth: Authenticator,
