@@ -1,9 +1,14 @@
 package com.example.mindicadorevaluation.features.detail
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.*
-import androidx.appcompat.app.ActionBar
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -13,39 +18,34 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mindicadorevaluation.R
 import com.example.mindicadorevaluation.core.models.Indicator
-import com.example.mindicadorevaluation.core.utils.Constants.BUNDLE_INDICATOR
 import com.example.mindicadorevaluation.core.utils.Resource
 import com.example.mindicadorevaluation.databinding.FragmentListIndicatorsBinding
 import com.example.mindicadorevaluation.features.detail.adapters.IndicatorAdapter
 import com.example.mindicadorevaluation.features.login.MainActivity
 import com.google.android.material.snackbar.Snackbar
-import timber.log.Timber
+import dagger.android.support.AndroidSupportInjection
 
 class ListIndicatorsFragment : Fragment() {
 
-    lateinit var indicatorAdapter : IndicatorAdapter
+    lateinit var indicatorAdapter: IndicatorAdapter
 
     lateinit var viewModel: DetailViewModel
     private var _binding: FragmentListIndicatorsBinding? = null
-    private val binding
-        get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (requireActivity() is DetailActivity){
-            viewModel = (activity as DetailActivity).viewModel
-        }
-    }
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentListIndicatorsBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
-
         return binding.root
+    }
+
+    override fun onAttach(context: Context) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,10 +55,10 @@ class ListIndicatorsFragment : Fragment() {
         viewModel.getIndicators()
         val user = viewModel.getUserName().toUpperCase()
 
-        if (requireActivity() is AppCompatActivity){
-            (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_detail, user)
+        if (requireActivity() is AppCompatActivity) {
+            (activity as AppCompatActivity).supportActionBar?.title =
+                getString(R.string.title_detail, user)
         }
-
 
         binding.svIndicator.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
@@ -75,7 +75,6 @@ class ListIndicatorsFragment : Fragment() {
 
     }
 
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -83,22 +82,25 @@ class ListIndicatorsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_detail_activity, menu)
-        //super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.menu_login -> {
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage(R.string.exit_warning)
-                    .setPositiveButton(R.string.exit_warning_positive, DialogInterface.OnClickListener{ dialogInterface, i ->
-                        requireContext().startActivity(MainActivity.callActivity(requireContext()))
-                        requireActivity().finish()
+                    .setPositiveButton(
+                        R.string.exit_warning_positive,
+                        DialogInterface.OnClickListener { dialogInterface, i ->
+                            requireContext().startActivity(MainActivity.callActivity(requireContext()))
+                            requireActivity().finish()
 
-                    })
-                    .setNegativeButton(R.string.exit_warning_negative, DialogInterface.OnClickListener { dialogInterface, i ->  
-                        
-                    })
+                        })
+                    .setNegativeButton(
+                        R.string.exit_warning_negative,
+                        DialogInterface.OnClickListener { dialogInterface, i ->
+
+                        })
 
                 val b = builder.create()
                 b.show()
@@ -109,7 +111,6 @@ class ListIndicatorsFragment : Fragment() {
     }
 
     private fun observeList() {
-
         viewModel.responseApi.removeObservers(viewLifecycleOwner)
         viewModel.responseApi.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
@@ -148,21 +149,22 @@ class ListIndicatorsFragment : Fragment() {
 
     }
 
-
     private fun init() {
-       indicatorAdapter = IndicatorAdapter()
+        indicatorAdapter = IndicatorAdapter()
 
         binding.rvIndicators.apply {
             adapter = indicatorAdapter
             layoutManager = LinearLayoutManager(activity)
-           setHasFixedSize(true)
+            setHasFixedSize(true)
         }
 
         indicatorAdapter.setOnIndicatorClickListener {
-            val action = ListIndicatorsFragmentDirections.actionListIndicatorsFragmentToSelectedIndicatorFragment(it)
+            val action =
+                ListIndicatorsFragmentDirections.actionListIndicatorsFragmentToSelectedIndicatorFragment(
+                    it
+                )
             findNavController().navigate(action)
         }
-
 
         binding.rvIndicators.setOnClickListener {
             findNavController().navigate(R.id.action_listIndicatorsFragment_to_selectedIndicatorFragment)
@@ -170,10 +172,10 @@ class ListIndicatorsFragment : Fragment() {
     }
 
     private fun hideProgress() {
-        binding.pbRequestApi.visibility =View.INVISIBLE
+        binding.pbRequestApi.visibility = View.INVISIBLE
     }
 
     private fun showProgress() {
-        binding.pbRequestApi.visibility =View.VISIBLE
+        binding.pbRequestApi.visibility = View.VISIBLE
     }
 }

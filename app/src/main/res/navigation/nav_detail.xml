@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_detail"
-    app:startDestination="@id/listIndicatorsFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/listIndicatorsFragment"
@@ -19,11 +19,17 @@
         android:name="com.example.mindicadorevaluation.features.detail.SelectedIndicatorFragment"
         android:label="fragment_indicator_detail"
         tools:layout="@layout/fragment_indicator_detail" >
-        <action
-            android:id="@+id/action_selectedIndicatorFragment_to_listIndicatorsFragment"
-            app:destination="@id/listIndicatorsFragment" />
         <argument
             android:name="indicator"
             app:argType="com.example.mindicadorevaluation.core.models.Indicator" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.mindicadorevaluation.features.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_listIndicatorsFragment"
+            app:destination="@id/listIndicatorsFragment" />
     </fragment>
 </navigation>
