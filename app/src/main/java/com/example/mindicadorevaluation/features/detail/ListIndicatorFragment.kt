@@ -26,7 +26,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-class ListIndicatorFragment : Fragment() {
+class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
 
     lateinit var indicatorAdapter: IndicatorAdapter
 
@@ -91,9 +91,7 @@ class ListIndicatorFragment : Fragment() {
                     .setPositiveButton(
                         R.string.exit_warning_positive
                     ) { _, _ ->
-                        requireContext().startActivity(MainActivity.callActivity(requireContext()))
-                        requireActivity().finish()
-
+                        viewModel.logout()
                     }
                     .setNegativeButton(
                         R.string.exit_warning_negative
@@ -142,6 +140,7 @@ class ListIndicatorFragment : Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
+            ListIndicatorViewModel.Command.LogOut -> navigateToLogin()
         }
     }
 
@@ -161,6 +160,11 @@ class ListIndicatorFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+    }
+
+    private fun navigateToLogin() {
+        requireContext().startActivity(MainActivity.callActivity(requireContext()))
+        requireActivity().finish()
     }
 
 }

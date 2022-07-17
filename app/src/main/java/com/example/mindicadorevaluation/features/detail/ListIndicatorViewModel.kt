@@ -27,6 +27,7 @@ class ListIndicatorViewModel @Inject constructor(
     sealed class Command {
         object NoInternet : Command()
         object Error : Command()
+        object LogOut : Command()
     }
 
     private val _viewState = MutableLiveData(ViewState())
@@ -65,5 +66,10 @@ class ListIndicatorViewModel @Inject constructor(
             _viewState.postValue(currentViewState.copy(isLoading = false))
             command.postValue(Command.NoInternet)
         }
+    }
+
+    fun logout() {
+        auth.setIsLogged(false)
+        command.value = Command.LogOut
     }
 }
