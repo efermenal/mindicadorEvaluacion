@@ -1,14 +1,15 @@
 package com.example.mindicadorevaluation.di
 
+import com.example.mindicadorevaluation.core.utils.DefaultDispatcherProvider
+import com.example.mindicadorevaluation.core.utils.DispatcherProvider
 import dagger.Module
 import dagger.Provides
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import javax.inject.Singleton
 
 @Module
 object DispatcherModule {
 
-    @IoDispatcher
+    @Singleton
     @Provides
-    fun providesIoDispatcher() : CoroutineDispatcher = Dispatchers.IO
+    fun providesDispatcher(): DispatcherProvider = DefaultDispatcherProvider()
 }

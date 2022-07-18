@@ -18,6 +18,7 @@ buildscript {
         lifecycle_ext_version = "2.2.0"
         material_version = "1.6.1"
         mockito_version = "4.4.0"
+        mockito_kotlin_version = "4.0.0"
         navigation_version = "2.5.0"
         ok_http_version = "4.9.3"
         retrofit_version = "2.9.0"

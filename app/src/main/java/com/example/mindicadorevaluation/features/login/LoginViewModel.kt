@@ -7,10 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mindicadorevaluation.core.crypto.Encryption
 import com.example.mindicadorevaluation.core.services.Authenticator
+import com.example.mindicadorevaluation.core.utils.DispatcherProvider
 import com.example.mindicadorevaluation.db.UserDao
-import com.example.mindicadorevaluation.di.IoDispatcher
 import com.example.mindicadorevaluation.features.SingleLiveEvent
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,7 +19,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val encryption: Encryption,
     private val userDao: UserDao,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val dispatcherProvider: DispatcherProvider,
     private val auth: Authenticator,
 ) : ViewModel() {
 
@@ -42,7 +41,7 @@ class LoginViewModel @Inject constructor(
         get() = viewState.value!!
 
     fun attemptingLogin(id: String, password: String) = viewModelScope.launch {
-        withContext(ioDispatcher) {
+        withContext(dispatcherProvider.io()) {
 
             if (id.isEmpty() && password.isEmpty()) {
                 command.postValue(Command.EmptyCredentials)
