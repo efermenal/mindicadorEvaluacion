@@ -55,6 +55,7 @@ class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
         super.onViewCreated(view, savedInstanceState)
         init()
         observeList()
+        viewModel.getIndicators()
         val user = viewModel.getUserName().uppercase()
 
         setSupportActionBarTitle(R.string.title_detail, user)
@@ -75,8 +76,8 @@ class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _binding = null
+        super.onDestroyView()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
