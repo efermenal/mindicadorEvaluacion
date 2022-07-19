@@ -37,35 +37,32 @@ class ListIndicatorViewModel @Inject constructor(
 
     private val currentViewState: ViewState get() = viewState.value!!
 
-    init {
-        getIndicators()
-    }
-
     fun getUserName() = auth.getUserLogged()
 
     fun getIndicators() = viewModelScope.launch {
+        _viewState.postValue(currentViewState.copy(isLoading = true))
 
-        if (netInfo.isOnline()) {
-            _viewState.postValue(currentViewState.copy(isLoading = true))
-            try {
-                val response = remote.getIndicators()
-
-                if (response is Resource.Success) {
-                    _viewState.postValue(
-                        currentViewState.copy(
-                            isLoading = false,
-                            indicators = response.data ?: emptyList()
-                        )
-                    )
-                }
-            } catch (e: Exception) {
-                _viewState.postValue(currentViewState.copy(isLoading = false))
-                command.postValue(Command.Error)
-            }
-        } else {
+        if (netInfo.isOnline().not()) {
             _viewState.postValue(currentViewState.copy(isLoading = false))
             command.postValue(Command.NoInternet)
+            return@launch
         }
+
+        try {
+            val response = remote.getIndicators()
+            if (response is Resource.Success) {
+                _viewState.postValue(
+                    currentViewState.copy(
+                        isLoading = false,
+                        indicators = response.data ?: emptyList()
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            _viewState.postValue(currentViewState.copy(isLoading = false))
+            command.postValue(Command.Error)
+        }
+
     }
 
     fun logout() {
