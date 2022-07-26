@@ -22,6 +22,9 @@ class ListIndicatorViewModel @Inject constructor(
     data class ViewState(
         val isLoading: Boolean = false,
         val indicators: List<Indicator> = emptyList(),
+        val selectedIndicators: List<Indicator> = emptyList(),
+        val indicatorInput: String = "",
+        val userName: String = "",
     )
 
     sealed class Command {
@@ -37,7 +40,9 @@ class ListIndicatorViewModel @Inject constructor(
 
     private val currentViewState: ViewState get() = viewState.value!!
 
-    fun getUserName() = auth.getUserLogged()
+    init {
+        _viewState.value = currentViewState.copy(userName = auth.getUserLogged())
+    }
 
     fun getIndicators() = viewModelScope.launch {
         _viewState.postValue(currentViewState.copy(isLoading = true))
@@ -54,7 +59,11 @@ class ListIndicatorViewModel @Inject constructor(
                 _viewState.postValue(
                     currentViewState.copy(
                         isLoading = false,
-                        indicators = response.data ?: emptyList()
+                        indicators = response.data ?: emptyList(),
+                        selectedIndicators = filteredList(
+                            response.data ?: emptyList(),
+                            currentViewState.indicatorInput
+                        )
                     )
                 )
             }
@@ -65,8 +74,19 @@ class ListIndicatorViewModel @Inject constructor(
 
     }
 
+    fun setInputSearch(search: String) {
+        val filteredList = filteredList(currentViewState.indicators, search)
+        _viewState.value =
+            currentViewState.copy(indicatorInput = search, selectedIndicators = filteredList)
+    }
+
     fun logout() {
         auth.setIsLogged(false)
         command.value = Command.LogOut
     }
+
+    private fun filteredList(indicators: List<Indicator>, search: String): List<Indicator> {
+        return indicators.filter { it.codigo.startsWith(search, true) }
+    }
+
 }

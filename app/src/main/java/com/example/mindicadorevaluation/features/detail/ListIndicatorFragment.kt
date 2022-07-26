@@ -56,19 +56,16 @@ class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
         init()
         observeList()
         viewModel.getIndicators()
-        val user = viewModel.getUserName().uppercase()
-
-        setSupportActionBarTitle(R.string.title_detail, user)
 
         binding.svIndicator.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                indicatorAdapter.filterByCode(query!!)
+                viewModel.setInputSearch(query ?: "")
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                indicatorAdapter.filterByCode(newText!!)
+                viewModel.setInputSearch(newText ?: "")
                 return true
             }
         })
@@ -98,10 +95,8 @@ class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
                         R.string.exit_warning_negative
                     ) { _, _ ->
 
-                    }
+                    }.create().show()
 
-                val b = builder.create()
-                b.show()
                 return true
             }
         }
@@ -111,18 +106,21 @@ class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
     private fun observeList() {
 
         viewModel.viewState.observe(viewLifecycleOwner) { viewState ->
-            when (viewState.isLoading) {
-                true -> binding.pbRequestApi.show()
-                false -> binding.pbRequestApi.gone()
-            }
-
-            indicatorAdapter.updateList(viewState.indicators)
-
-            viewModel.command.observe(viewLifecycleOwner) {
-                it?.let { processCommand(it) }
-            }
-
+            render(viewState)
         }
+        viewModel.command.observe(viewLifecycleOwner) {
+            it?.let { processCommand(it) }
+        }
+    }
+
+    private fun render(viewState: ListIndicatorViewModel.ViewState) {
+        when (viewState.isLoading) {
+            true -> binding.pbRequestApi.show()
+            false -> binding.pbRequestApi.gone()
+        }
+        setSupportActionBarTitle(R.string.title_detail, viewState.userName)
+        indicatorAdapter.submitList(viewState.selectedIndicators)
+        binding.svIndicator.setQuery(viewState.indicatorInput, false)
     }
 
     private fun processCommand(command: ListIndicatorViewModel.Command) {
@@ -146,19 +144,17 @@ class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
     }
 
     private fun init() {
-        indicatorAdapter = IndicatorAdapter()
+        indicatorAdapter = IndicatorAdapter {
+            val action =
+                ListIndicatorFragmentDirections
+                    .actionListIndicatorsFragmentToSelectedIndicatorFragment(it)
+            findNavController().navigate(action)
+        }
 
         binding.rvIndicators.apply {
             adapter = indicatorAdapter
             layoutManager = LinearLayoutManager(activity)
             setHasFixedSize(true)
-        }
-
-        indicatorAdapter.setOnIndicatorClickListener {
-            val action =
-                ListIndicatorFragmentDirections
-                    .actionListIndicatorsFragmentToSelectedIndicatorFragment(it)
-            findNavController().navigate(action)
         }
 
     }
