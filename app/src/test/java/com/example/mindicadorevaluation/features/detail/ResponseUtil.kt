@@ -22,14 +22,20 @@ object ResponseUtil {
         utm = Utm("", "", "", "", 0)
     )
 
+    private val indicator = Indicator(
+        codigo = "dollar",
+        fecha = "01/01/2022",
+        nombre = "dollar",
+        unidad_medida = "um",
+        valor = 0.0
+    )
+
     val indicatorList = listOf(
-        Indicator(
-            codigo = "1",
-            fecha = "01/01/2022",
-            nombre = "dollar",
-            unidad_medida = "um",
-            valor = 0.0
-        )
+        indicator,
+        indicator.copy(codigo = "bitcoin", nombre = "bitcoin"),
+        indicator.copy(codigo = "euro", nombre = "euro"),
+        indicator.copy(codigo = "uf", nombre = "uf"),
+        indicator.copy(codigo = "utm", nombre = "utm"),
     )
 
 

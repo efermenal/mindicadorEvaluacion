@@ -12,6 +12,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.ArgumentCaptor
@@ -47,6 +48,13 @@ class ListIndicatorViewModelTest {
         vm.viewState.observeForever(viewStateObserver)
         vm.command.observeForever(commandObserver)
         vm
+    }
+
+    private val userName = "user"
+
+    @Before
+    fun init() {
+        Mockito.`when`(auth.getUserLogged()).thenReturn(userName)
     }
 
     @After
@@ -137,10 +145,31 @@ class ListIndicatorViewModelTest {
 
     @Test
     fun getUserName_checkUserFromRepository() {
-        val userName = "user"
-        Mockito.`when`(auth.getUserLogged()).thenReturn(userName)
+        assertEquals(userName, viewModel.viewState.value?.userName)
+    }
 
-        assertEquals(userName, viewModel.getUserName())
+    @Test
+    fun setInputSearch_listFiltered() = runTest {
+        givenSuccess()
+        val inputSearch = "u"
+        viewModel.getIndicators()
+
+        viewModel.setInputSearch(inputSearch)
+
+        assertEquals(2, viewModel.viewState.value?.selectedIndicators?.count())
+        assertEquals(inputSearch, viewModel.viewState.value?.indicatorInput)
+    }
+
+    @Test
+    fun setInputSearch_listFilteredNonExistent() = runTest {
+        givenSuccess()
+        val inputSearch = "aaaa"
+        viewModel.getIndicators()
+
+        viewModel.setInputSearch(inputSearch)
+
+        assertEquals(0, viewModel.viewState.value?.selectedIndicators?.count())
+        assertEquals(inputSearch, viewModel.viewState.value?.indicatorInput)
     }
 
     private suspend fun givenException() {
