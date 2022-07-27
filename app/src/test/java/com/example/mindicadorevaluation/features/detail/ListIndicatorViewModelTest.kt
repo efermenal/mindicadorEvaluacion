@@ -173,10 +173,9 @@ class ListIndicatorViewModelTest {
     }
 
     private suspend fun givenException() {
-        val exception = RuntimeException("testing")
         Mockito.`when`(netInfo.isOnline()).thenReturn(true)
         Mockito.`when`(remote.getIndicators())
-            .thenThrow(exception)
+            .thenReturn(Resource.Error("Error Testing"))
     }
 
     private suspend fun givenSuccess() {

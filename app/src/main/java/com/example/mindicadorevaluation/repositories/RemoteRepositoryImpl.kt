@@ -17,8 +17,12 @@ class RemoteRepositoryImpl @Inject constructor(
 
     override suspend fun getIndicators(): Resource<List<Indicator>> =
         withContext(dispatcherProvider.io()) {
-            val response = remote.getIndicators()
-            handleRequest(response)
+            try {
+                val response = remote.getIndicators()
+                handleRequest(response)
+            } catch (e: Exception) {
+                Resource.Error(e.message.toString())
+            }
         }
 
     private fun handleRequest(response: Response<IndicatorResponse>): Resource<List<Indicator>> {

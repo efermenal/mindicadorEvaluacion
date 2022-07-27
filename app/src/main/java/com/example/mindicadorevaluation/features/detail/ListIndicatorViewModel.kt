@@ -53,21 +53,19 @@ class ListIndicatorViewModel @Inject constructor(
             return@launch
         }
 
-        try {
-            val response = remote.getIndicators()
-            if (response is Resource.Success) {
-                _viewState.postValue(
-                    currentViewState.copy(
-                        isLoading = false,
-                        indicators = response.data ?: emptyList(),
-                        selectedIndicators = filteredList(
-                            response.data ?: emptyList(),
-                            currentViewState.indicatorInput
-                        )
+        val response = remote.getIndicators()
+        if (response is Resource.Success) {
+            _viewState.postValue(
+                currentViewState.copy(
+                    isLoading = false,
+                    indicators = response.data ?: emptyList(),
+                    selectedIndicators = filteredList(
+                        response.data ?: emptyList(),
+                        currentViewState.indicatorInput
                     )
                 )
-            }
-        } catch (e: Exception) {
+            )
+        } else {
             _viewState.postValue(currentViewState.copy(isLoading = false))
             command.postValue(Command.Error)
         }
