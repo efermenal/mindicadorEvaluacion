@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -28,7 +30,7 @@ import javax.inject.Inject
 
 class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
 
-    lateinit var indicatorAdapter: IndicatorAdapter
+    private lateinit var indicatorAdapter: IndicatorAdapter
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -42,7 +44,6 @@ class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentListIndicatorBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -53,6 +54,7 @@ class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setMenu()
         init()
         observeList()
         viewModel.getIndicators()
@@ -75,32 +77,6 @@ class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_detail_activity, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_login -> {
-                val builder = AlertDialog.Builder(requireContext())
-                builder.setMessage(R.string.exit_warning)
-                    .setPositiveButton(
-                        R.string.exit_warning_positive
-                    ) { _, _ ->
-                        viewModel.logout()
-                    }
-                    .setNegativeButton(
-                        R.string.exit_warning_negative
-                    ) { _, _ ->
-
-                    }.create().show()
-
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun observeList() {
@@ -162,6 +138,37 @@ class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
     private fun navigateToLogin() {
         requireContext().startActivity(MainActivity.callActivity(requireContext()))
         requireActivity().finish()
+    }
+
+    private fun setMenu() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_detail_activity, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.menu_login -> {
+                        val builder = AlertDialog.Builder(requireContext())
+                        builder.setMessage(R.string.exit_warning)
+                            .setPositiveButton(
+                                R.string.exit_warning_positive
+                            ) { _, _ ->
+                                viewModel.logout()
+                            }
+                            .setNegativeButton(
+                                R.string.exit_warning_negative
+                            ) { _, _ ->
+
+                            }.create().show()
+                    }
+
+                }
+                return true
+            }
+
+        })
     }
 
 }
