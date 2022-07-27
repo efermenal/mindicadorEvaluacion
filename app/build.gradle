@@ -31,6 +31,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        freeCompilerArgs = ['-Xjvm-default=enable']
     }
     buildFeatures {
         viewBinding true
@@ -103,5 +104,7 @@ dependencies {
     androidTestImplementation "androidx.arch.core:core-testing:$arch_testing_version"
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
     androidTestImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_kotlin_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_version"
+    androidTestImplementation "androidx.navigation:navigation-testing:$navigation_version"
 
 }

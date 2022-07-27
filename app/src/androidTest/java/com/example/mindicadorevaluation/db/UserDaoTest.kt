@@ -8,7 +8,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.mindicadorevaluation.core.models.User
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.hamcrest.MatcherAssert
 import org.hamcrest.core.IsEqual
 import org.junit.After
@@ -16,8 +16,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.IOException
-import kotlin.jvm.Throws
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -25,6 +23,8 @@ class UserDaoTest {
 
     private lateinit var db : MindicadorDatabase
     private lateinit var userDao: UserDao
+    private val id = "id"
+    private val password = "password"
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
@@ -41,16 +41,13 @@ class UserDaoTest {
     }
 
     @After
-    @Throws(IOException::class)
     fun tearDown(){
         db.close()
     }
 
     @Test
-    @Throws(IOException::class)
-    fun insertAndGetUser_returnsUserInserted() = runBlockingTest {
-        val id = "Endherson"
-        val userTest = User(id, "ddfgffg")
+    fun insertAndGetUser_returnsUserInserted() = runTest {
+        val userTest = User(id, password)
         val user = listOf(userTest)
 
         userDao.insertUser(user)
@@ -61,20 +58,15 @@ class UserDaoTest {
     }
 
     @Test
-    @Throws(IOException::class)
-    fun getUserById_noUser_returnsEmpty() = runBlockingTest {
-        val id = "Endherson"
-        val userTest = User(id, "ddfgffg")
+    fun getUserById_noUser_returnsEmpty() = runTest {
+        val userTest = User(id, password)
         val user = listOf(userTest)
+        val anotherId = "anotherId"
 
         userDao.insertUser(user)
 
-        val users = userDao.getUserById("id").first()
+        val users = userDao.getUserById(anotherId).first()
 
-        MatcherAssert.assertThat("must be empty", users.isEmpty());
+        MatcherAssert.assertThat("must be empty", users.isEmpty())
     }
-
-
-
 }
-
