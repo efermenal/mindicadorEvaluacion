@@ -35,7 +35,7 @@ class LoginFragmentTest {
     private val encryption: Encryption = mock()
     private val userDao: UserDao = mock()
     private val loginViewModelViewModelFactoryTest =
-        ViewModelFactoryTest(encryption, userDao, coroutineRule.testDispatcherProvider, auth)
+        ViewModelFactoryTest(coroutineRule.testDispatcherProvider, encryption, userDao, auth)
 
     private val username = "user"
     private val password = "password"
