@@ -142,33 +142,35 @@ class ListIndicatorFragment : Fragment(R.layout.fragment_list_indicator) {
 
     private fun setMenu() {
         val menuHost: MenuHost = requireActivity()
-        menuHost.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.menu_detail_activity, menu)
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.menu_login -> {
-                        val builder = AlertDialog.Builder(requireContext())
-                        builder.setMessage(R.string.exit_warning)
-                            .setPositiveButton(
-                                R.string.exit_warning_positive
-                            ) { _, _ ->
-                                viewModel.logout()
-                            }
-                            .setNegativeButton(
-                                R.string.exit_warning_negative
-                            ) { _, _ ->
-
-                            }.create().show()
-                    }
-
+        menuHost.addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.menu_detail_activity, menu)
                 }
-                return true
-            }
 
-        })
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                    when (menuItem.itemId) {
+                        R.id.menu_login -> {
+                            val builder = AlertDialog.Builder(requireContext())
+                            builder.setMessage(R.string.exit_warning)
+                                .setPositiveButton(
+                                    R.string.exit_warning_positive
+                                ) { _, _ ->
+                                    viewModel.logout()
+                                }
+                                .setNegativeButton(
+                                    R.string.exit_warning_negative
+                                ) { _, _ ->
+
+                                }.create().show()
+                        }
+
+                    }
+                    return true
+                }
+
+            }, viewLifecycleOwner
+        )
     }
 
 }
