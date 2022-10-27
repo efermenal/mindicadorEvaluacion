@@ -1,14 +1,14 @@
 package com.example.mindicadorevaluation.features.login
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
-import androidx.fragment.app.testing.launchFragmentInContainer
+import android.view.View
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.mindicadorevaluation.CoroutineTestRule
 import com.example.mindicadorevaluation.R
+import com.example.mindicadorevaluation.TestActivity
 import com.example.mindicadorevaluation.ViewModelFactoryTest
 import com.example.mindicadorevaluation.core.crypto.Encryption
 import com.example.mindicadorevaluation.core.models.User
@@ -44,27 +44,56 @@ class LoginFragmentTest {
     private val testNavController =
         TestNavHostController(ApplicationProvider.getApplicationContext())
 
+    /* Use this approach when you are not calling to a fragment injected by Dagger:
+    AndroidSupportInjection.inject(this) is not called
     private val fragmentFactory = object : FragmentFactory() {
-        override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
-            return LoginFragment().apply {
-                viewModelFactory = loginViewModelViewModelFactoryTest
-            }
+    override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
+        return LoginFragment().apply {
+            viewModelFactory = loginViewModelViewModelFactoryTest
         }
+      }
+    }
+    */
+
+    private val fragment = LoginFragment().apply {
+        viewModelFactory = loginViewModelViewModelFactoryTest
+    }
+
+
+    @get:Rule
+    val rule = ActivityScenarioRule(TestActivity::class.java)
+
+
+    private fun inject(fragment: LoginFragment) {
+        fragment.tag
     }
 
     @Before
     fun init() {
-        val loginScenario = launchFragmentInContainer<LoginFragment>(
-            fragmentArgs = null,
-            R.style.Theme_MindicadorEvaluation,
-            factory = fragmentFactory,
-        )
-        loginScenario.onFragment {
-            testNavController.setGraph(R.navigation.nav_detail)
 
-            // Make the NavController available via the findNavController() APIs
-            Navigation.setViewNavController(it.requireView(), testNavController)
+        rule.scenario.onActivity {
+            testNavController.setGraph(R.navigation.nav_detail)
+            Navigation.setViewNavController(
+                it.findViewById<View>(android.R.id.content).rootView,
+                testNavController
+            )
+            it.startFragment(fragment, this@LoginFragmentTest::inject)
         }
+
+/* Use this approach when you are not calling to a fragment injected by Dagger:
+    AndroidSupportInjection.inject(this) is not called
+val loginScenario = launchFragmentInContainer<LoginFragment>(
+    fragmentArgs = null,
+    R.style.Theme_MindicadorEvaluation,
+    factory = fragmentFactory,
+)
+loginScenario.onFragment {
+    testNavController.setGraph(R.navigation.nav_detail)
+
+    // Make the NavController available via the findNavController() APIs
+    Navigation.setViewNavController(it.requireView(), testNavController)
+}
+*/
     }
 
     @Test
