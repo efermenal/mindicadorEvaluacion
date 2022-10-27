@@ -1,11 +1,11 @@
 package com.example.mindicadorevaluation.features.detail
 
-import androidx.fragment.app.FragmentFactory
-import androidx.fragment.app.testing.launchFragmentInContainer
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.example.mindicadorevaluation.R
+import com.example.mindicadorevaluation.TestActivity
 import org.hamcrest.CoreMatchers
 
 class ListIndicatorRobot {
@@ -36,14 +36,16 @@ class ListIndicatorVerificationRobot {
 }
 
 fun launchListIndicator(
-    fragmentFactory: FragmentFactory,
+    rule: ActivityScenarioRule<TestActivity>,
+    listIndicatorFragment: ListIndicatorFragment,
     block: ListIndicatorRobot.() -> Unit
 ): ListIndicatorRobot {
-    launchFragmentInContainer<ListIndicatorFragment>(
-        fragmentArgs = null,
-        R.style.Theme_MindicadorEvaluation,
-        factory = fragmentFactory
-    )
+
+    rule.scenario.onActivity { activity ->
+        activity.startFragment(listIndicatorFragment) {
+            it.tag
+        }
+    }
 
     return ListIndicatorRobot().apply(block)
 }

@@ -1,9 +1,9 @@
 package com.example.mindicadorevaluation.features.detail
 
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.mindicadorevaluation.CoroutineTestRule
+import com.example.mindicadorevaluation.TestActivity
 import com.example.mindicadorevaluation.ViewModelFactoryTest
 import com.example.mindicadorevaluation.core.models.Indicator
 import com.example.mindicadorevaluation.core.services.Authenticator
@@ -25,6 +25,9 @@ class ListIndicatorFragmentTest {
     @get:Rule
     val coroutineRule = CoroutineTestRule()
 
+    @get:Rule
+    val rule = ActivityScenarioRule(TestActivity::class.java)
+
     private val remoteRepository: RemoteRepository = mock()
     private val netInfo: NetworkInformation = mock()
     private val authenticator: Authenticator = mock()
@@ -37,24 +40,20 @@ class ListIndicatorFragmentTest {
             auth = authenticator,
         )
 
-    private val fragmentFactory = object : FragmentFactory() {
-        override fun instantiate(classLoader: ClassLoader, className: String): Fragment {
-            return ListIndicatorFragment().apply {
-                viewModelFactory = factory
-            }
-        }
+    private val fragment = ListIndicatorFragment().apply {
+        viewModelFactory = factory
     }
 
     @Before
     fun init() {
         whenever(authenticator.getUserLogged()).thenReturn("MyUser")
-
+        whenever(netInfo.isOnline()).thenReturn(true)
     }
 
     @Test
     fun whenInternetIsOffMessageIsShown() {
         whenever(netInfo.isOnline()).thenReturn(false)
-        launchListIndicator(fragmentFactory) {
+        launchListIndicator(rule, fragment) {
 
         } verify {
             internetMessageIsDisplayed()
@@ -63,30 +62,11 @@ class ListIndicatorFragmentTest {
 
     @Test
     fun whenErrorMessageIsShown() {
-
-        whenever(netInfo.isOnline()).thenReturn(true)
-
         runBlocking {
             whenever(remoteRepository.getIndicators()).thenReturn(Resource.Error("Error testing"))
         }
 
-        launchListIndicator(fragmentFactory) {
-
-        } verify {
-            errorMessageIsDisplayed()
-        }
-    }
-
-    @Test
-    fun whenErrorMessageIsShownI() {
-
-        whenever(netInfo.isOnline()).thenReturn(true)
-
-        runBlocking {
-            whenever(remoteRepository.getIndicators()).thenReturn(Resource.Success(indicators))
-        }
-
-        launchListIndicator(fragmentFactory) {
+        launchListIndicator(rule, fragment) {
 
         } verify {
             errorMessageIsDisplayed()
@@ -109,6 +89,5 @@ class ListIndicatorFragmentTest {
             valor = 2.0
         )
     )
-
 
 }
