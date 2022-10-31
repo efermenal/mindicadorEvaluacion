@@ -1,6 +1,5 @@
 package com.example.mindicadorevaluation.db
 
-import android.app.Application
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -9,12 +8,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.mindicadorevaluation.core.models.User
 
 @Database(
-    entities =[User::class],
+    entities = [User::class],
     version = 1,
     exportSchema = false
 )
 abstract class MindicadorDatabase : RoomDatabase() {
-    abstract fun getUserDao() : UserDao
+    abstract fun getUserDao(): UserDao
 
     companion object {
 

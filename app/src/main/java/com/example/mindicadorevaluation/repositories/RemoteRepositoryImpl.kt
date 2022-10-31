@@ -8,6 +8,7 @@ import com.example.mindicadorevaluation.core.utils.DispatcherProvider
 import com.example.mindicadorevaluation.core.utils.Resource
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import timber.log.Timber
 import javax.inject.Inject
 
 class RemoteRepositoryImpl @Inject constructor(
@@ -21,6 +22,7 @@ class RemoteRepositoryImpl @Inject constructor(
                 val response = remote.getIndicators()
                 handleRequest(response)
             } catch (e: Exception) {
+                Timber.d(e.message)
                 Resource.Error(e.message.toString())
             }
         }
@@ -28,9 +30,11 @@ class RemoteRepositoryImpl @Inject constructor(
     private fun handleRequest(response: Response<IndicatorResponse>): Resource<List<Indicator>> {
         if (response.isSuccessful) {
             response.body()?.let { result ->
+                Timber.d(result.toString())
                 return Resource.Success(result.getListIndicator())
             }
         }
+        Timber.d(response.message())
         return Resource.Error(response.message())
     }
 

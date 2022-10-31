@@ -7,5 +7,5 @@ import retrofit2.http.GET
 interface MindicadorApi {
 
     @GET("api")
-    suspend fun getIndicators() : Response<IndicatorResponse>
+    suspend fun getIndicators(): Response<IndicatorResponse>
 }

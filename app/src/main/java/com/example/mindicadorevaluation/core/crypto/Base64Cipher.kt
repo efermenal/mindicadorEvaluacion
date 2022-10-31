@@ -6,6 +6,6 @@ On the other hand,  Base64.getEncoder()/Base64.getDecoder() depends on higher AP
 So, I'm using the last one in test (both of them generate equal results)
  */
 interface Base64Cipher {
-    fun encode(arrayToEncode : ByteArray) : ByteArray?
-    fun decode(stringToDecode : String) : ByteArray
+    fun encode(arrayToEncode: ByteArray): ByteArray?
+    fun decode(stringToDecode: String): ByteArray
 }
