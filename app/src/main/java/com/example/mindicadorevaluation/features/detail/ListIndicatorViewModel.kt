@@ -84,7 +84,7 @@ class ListIndicatorViewModel @Inject constructor(
     }
 
     private fun filteredList(indicators: List<Indicator>, search: String): List<Indicator> {
-        return indicators.filter { it.codigo.startsWith(search, true) }
+        return indicators.filter { it.code.startsWith(search, true) }
     }
 
 }

@@ -14,7 +14,7 @@ class IndicatorAdapter(
 
     private val itemDiffCallback = object : DiffUtil.ItemCallback<Indicator>() {
         override fun areItemsTheSame(oldItem: Indicator, newItem: Indicator): Boolean {
-            return oldItem.codigo == newItem.codigo
+            return oldItem.code == newItem.code
         }
 
         override fun areContentsTheSame(oldItem: Indicator, newItem: Indicator): Boolean {
@@ -45,8 +45,8 @@ class IndicatorAdapter(
 
         fun bind(item: Indicator, onIndicatorClickListener: ((Indicator) -> Unit)?) {
             with(biding) {
-                nameIndicator.text = item.nombre
-                valueIndicator.text = item.valor.toString()
+                nameIndicator.text = item.name
+                valueIndicator.text = item.value.toString()
             }
             itemView.setOnClickListener {
                 onIndicatorClickListener.let {

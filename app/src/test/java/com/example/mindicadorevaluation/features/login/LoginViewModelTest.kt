@@ -7,7 +7,7 @@ import com.example.mindicadorevaluation.core.crypto.Base64Cipher
 import com.example.mindicadorevaluation.core.crypto.Base64CipherTesting
 import com.example.mindicadorevaluation.core.crypto.Encryption
 import com.example.mindicadorevaluation.core.crypto.KeysRepository
-import com.example.mindicadorevaluation.core.models.User
+import com.example.mindicadorevaluation.db.User
 import com.example.mindicadorevaluation.core.services.Authenticator
 import com.example.mindicadorevaluation.db.UserDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi

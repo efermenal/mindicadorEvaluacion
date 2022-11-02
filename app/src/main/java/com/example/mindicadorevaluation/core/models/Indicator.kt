@@ -3,9 +3,9 @@ package com.example.mindicadorevaluation.core.models
 import java.io.Serializable
 
 data class Indicator(
-    val codigo: String,
-    val fecha: String,
-    val nombre: String,
-    val unidad_medida: String,
-    val valor: Double
+    val code: String,
+    val updatedDate: String,
+    val name: String,
+    val measurementUnit: String,
+    val value: Double,
 ) : Serializable

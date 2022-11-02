@@ -75,18 +75,18 @@ class ListIndicatorFragmentTest {
 
     private val indicators = listOf(
         Indicator(
-            codigo = "dollar",
-            fecha = "12/03/2021",
-            nombre = "Dollar",
-            unidad_medida = "UM",
-            valor = 1.5
+            code = "dollar",
+            updatedDate = "12/03/2021",
+            name = "Dollar",
+            measurementUnit = "UM",
+            value = 1.5
         ),
         Indicator(
-            codigo = "bitcoin",
-            fecha = "12/03/2021",
-            nombre = "Bitcoin",
-            unidad_medida = "B",
-            valor = 2.0
+            code = "bitcoin",
+            updatedDate = "12/03/2021",
+            name = "Bitcoin",
+            measurementUnit = "B",
+            value = 2.0
         )
     )
 

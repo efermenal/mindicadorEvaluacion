@@ -11,7 +11,7 @@ import com.example.mindicadorevaluation.R
 import com.example.mindicadorevaluation.TestActivity
 import com.example.mindicadorevaluation.ViewModelFactoryTest
 import com.example.mindicadorevaluation.core.crypto.Encryption
-import com.example.mindicadorevaluation.core.models.User
+import com.example.mindicadorevaluation.db.User
 import com.example.mindicadorevaluation.core.services.Authenticator
 import com.example.mindicadorevaluation.db.UserDao
 import kotlinx.coroutines.ExperimentalCoroutinesApi

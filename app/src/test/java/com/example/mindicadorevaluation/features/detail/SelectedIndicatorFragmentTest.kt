@@ -33,7 +33,7 @@ class SelectedIndicatorFragmentTest {
                 }
             })
 
-        onView(ViewMatchers.withId(R.id.nameIndicator)).check(ViewAssertions.matches(ViewMatchers.withText(argumentIndicator.nombre)))
+        onView(ViewMatchers.withId(R.id.nameIndicator)).check(ViewAssertions.matches(ViewMatchers.withText(argumentIndicator.name)))
 
     }
 

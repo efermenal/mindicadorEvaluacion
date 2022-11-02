@@ -2,7 +2,8 @@ package com.example.mindicadorevaluation.repositories
 
 import com.example.mindicadorevaluation.api.MindicadorApi
 import com.example.mindicadorevaluation.core.models.Indicator
-import com.example.mindicadorevaluation.core.models.IndicatorResponse
+import com.example.mindicadorevaluation.api.LatestIndicatorsResponse
+import com.example.mindicadorevaluation.api.toDomain
 import com.example.mindicadorevaluation.core.services.RemoteRepository
 import com.example.mindicadorevaluation.core.utils.DispatcherProvider
 import com.example.mindicadorevaluation.core.utils.Resource
@@ -27,11 +28,11 @@ class RemoteRepositoryImpl @Inject constructor(
             }
         }
 
-    private fun handleRequest(response: Response<IndicatorResponse>): Resource<List<Indicator>> {
+    private fun handleRequest(response: Response<LatestIndicatorsResponse>): Resource<List<Indicator>> {
         if (response.isSuccessful) {
             response.body()?.let { result ->
                 Timber.d(result.toString())
-                return Resource.Success(result.getListIndicator())
+                return Resource.Success(result.toDomain())
             }
         }
         Timber.d(response.message())

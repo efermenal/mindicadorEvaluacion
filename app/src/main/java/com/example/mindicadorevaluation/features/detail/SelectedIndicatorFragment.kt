@@ -17,11 +17,11 @@ class SelectedIndicatorFragment : Fragment(R.layout.fragment_indicator_detail) {
         super.onViewCreated(view, savedInstanceState)
         val binding = FragmentIndicatorDetailBinding.bind(view)
         val item = args.indicator
-        binding.nameIndicator.text = item.nombre
-        binding.codeIndicator.text = item.codigo
-        binding.unitIndicator.text = item.unidad_medida
-        binding.valueIndicator.text = item.valor.toString()
-        val dateString = item.fecha.substring(0, 10)
+        binding.nameIndicator.text = item.name
+        binding.codeIndicator.text = item.code
+        binding.unitIndicator.text = item.measurementUnit
+        binding.valueIndicator.text = item.value.toString()
+        val dateString = item.updatedDate.substring(0, 10)
         binding.dateIndicator.text = dateString
 
         setSupportActionBarTitle(R.string.title_selected_indicator)
