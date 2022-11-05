@@ -1,52 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="100dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_weight="1"
-    app:cardElevation="3dp"
-    android:background="@color/design_default_color_primary"
-    app:cardCornerRadius="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
     android:layout_margin="8dp"
-    android:orientation="horizontal">
+    android:layout_weight="1"
+    android:background="@color/design_default_color_primary"
+    android:orientation="horizontal"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="3dp">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
-      android:layout_width="match_parent"
-      android:padding="16dp"
-      android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-      <ImageView
-          android:id="@+id/ivImage"
-          android:layout_width="100dp"
-          android:layout_height="75dp"
-          android:scaleType="fitCenter"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          android:src="@drawable/ic_monetization"
-          android:contentDescription="@string/todo" />
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="100dp"
+            android:layout_height="75dp"
+            android:contentDescription="@string/todo"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_monetization"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-      <TextView
-          android:id="@+id/name_indicator"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="16dp"
-          android:ellipsize="end"
-          app:layout_constraintTop_toTopOf="parent"
-          app:layout_constraintStart_toEndOf="@+id/ivImage"
-          android:textSize="20sp" />
+        <TextView
+            android:id="@+id/name_indicator"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textSize="20sp"
+            android:maxLines="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivImage"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
 
-      <TextView
-          android:id="@+id/value_indicator"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="16dp"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintStart_toEndOf="@+id/ivImage"
-          android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/value_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivImage"
+            tools:text="10.25" />
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
